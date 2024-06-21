@@ -1,0 +1,2 @@
+mkdir -p bin
+(cd bin && sh ../build.cmd .. build)

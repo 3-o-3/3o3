@@ -1,0 +1,22 @@
+# For more options and information see
+# http://rptl.io/configtxt
+
+disable_fw_kms_setup=1
+disable_overscan=1
+arm_boost=0
+disable_commandline_tags=1
+
+[pi400]
+enable_jtag_gpio=1
+gpio=22-27=a4,np
+arm_64bit=1
+kernel_old=
+kernel_address=0x80000
+uart_2ndstage=1
+start_debug=1
+dtoverlay=disable-bt
+enable_gic=1
+enable_uart=1
+
+[all]
+

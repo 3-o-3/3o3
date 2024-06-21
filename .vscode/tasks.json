@@ -1,0 +1,592 @@
+{
+    "tasks": [
+        {
+            "label": "Build ALL",
+            "type": "shell",
+            "command": "${workspaceFolder}/bin/32gears.exe",
+            "options": {
+                "cwd": "${workspaceFolder}/bin",
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "make 32gears"
+            ]
+        },
+        {
+            "label": "build build",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-D_CRT_NONSTDC_NO_DEPRECATE=1",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/build.c",
+                "-ansi",
+                "-g",
+                "-o",
+                "build.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make build",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/build.c",
+                "-ansi",
+                "-o",
+                "build.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "run build",
+            "type": "shell",
+            "command": "./build .. all",
+            "windows": {
+                "command": "./build .. all",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": []
+        },
+        {
+            "label": "make toinc",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "-ansi",
+                "../tools/toinc.c",
+                "-o",
+                "toinc.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make bin2hex",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "-ansi",
+                "../tools/bin2hex.c",
+                "-o",
+                "bin2hex.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make obj2bin",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "-ansi",
+                "../tools/obj2bin.c",
+                "-o",
+                "obj2bin.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make vhd_cp",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-D_WIN32",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/cp.c",
+                "-o",
+                "vhd_cp.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make parted",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-ansi",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/parted.c",
+                "-o",
+                "parted.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make mkdosfs",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-ansi",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/mkdosfs.c",
+                "-o",
+                "mkdosfs.exe"
+            ],
+            "windows": {
+                "args": [
+                    "-ansi",
+                    "-D_WIN32",
+                    "-D_CRT_SECURE_NO_WARNINGS=1",
+                    "../tools/mkdosfs.c",
+                    "-o",
+                    "mkdosfs.exe"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "compile bootx64.efi",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-D__AMD64__",
+                "-target",
+                "x86_64-unknown-windows",
+                "-ffreestanding",
+                "-nostdlib",
+                "-nostdinc",
+                "-nostartfiles",
+                "-fno-builtin",
+                "-MMD",
+                "-fuse-ld=lld",
+                "-mno-red-zone",
+                "-Wl,-subsystem:efi_application,-entry:efi_main",
+                "../src/amd64/bootx64.S",
+                "../src/amd64/efi64.c",
+                "../src/i386/acpi.c",
+                "../src/klib.c",
+                "../src/i386/pci.c",
+                "-o",
+                "bootx64.efi"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOn": [
+                "make io32"
+            ]
+        },
+        {
+            "label": "make bootx64.efi",
+            "type": "shell",
+            "command": "rm -f *.d *.o",
+            "args": [],
+            "windows": {
+                "command": "del *.d; del *.o; del *.pdb; del *.ilk",
+                "args": [],
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": []
+        },
+        {
+            "label": "compile mbr",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-c",
+                "-target",
+                "i686-linux-gnu",
+                "-m16",
+                "../src/i386/mbr.S",
+                "-o",
+                "mbr.o"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "compile io16",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-c",
+                "-target",
+                "i686-linux-gnu",
+                "-m16",
+                "../src/i386/io16.S",
+                "-o",
+                "io16.o"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make io16",
+            "type": "shell",
+            "command": "./obj2bin.exe io16.o io16.bin",
+            "windows": {
+                "command": ".\\obj2bin io16.o io16.bin >io16.log 2>&1",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compile io16"
+            ]
+        },
+        {
+            "label": "compile io32.S",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-c",
+                "-D__I386__",
+                "-target",
+                "i686-linux-gnu",
+                "-m32",
+                "-nostdlib",
+                "-nostdinc",
+                "-nostartfiles",
+                "-fno-builtin",
+                "../src/i386/io32.S",
+                "-o",
+                "io32.o"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "compile io32",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-D__I386__",
+                "-target",
+                "i686-linux-gnu",
+                "-m32",
+                "-nostdlib",
+                "-nostdinc",
+                "-nostartfiles",
+                "-fno-builtin",
+                "-fuse-ld=lld",
+                "-static-pie",
+                "-T",
+                "../src/i386/io32.ld",
+                "io32.o",
+                "../src/i386/fb.c",
+                "../src/i386/interrupt.c",
+                "../src/klib.c",
+                "../src/i386/pci.c",
+                "../src/kernel.c",
+                "../src/rtos.c",
+                "../src/xhci.c",
+                "-o",
+                "io32.elf"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOn": [
+                "compile io32.S"
+            ]
+        },
+        {
+            "label": "make io32",
+            "type": "shell",
+            "command": "/bin/bash -c '(llvm-objcopy -O binary io32.elf io32.bin) && (cat io16.bin io32.bin >io.sys) && (./bin2hex.exe io32.bin io32.h)'",
+            "args": [],
+            "windows": {
+                "command": "cmd /c",
+                "args": [
+                    "llvm-objcopy -O binary io32.elf io32.bin",
+                    "&&",
+                    "copy /b io16.bin+io32.bin io.sys",
+                    "&&",
+                    ".\\bin2hex io32.bin io32.h"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compile io32",
+                "make io16"
+            ]
+        },
+        {
+            "label": "make mbr",
+            "type": "shell",
+            "command": "/bin/bash -c '(./obj2bin.exe mbr.o mbr1.bin >vbr.log 2>&1) && ./bin2hex.exe mbr1.bin mbr.h && cp 440.bin mbr.bin && cp mbr.h ../src/i386/'",
+            "windows": {
+                "command": "(.\\obj2bin mbr.o mbr1.bin >vbr.log 2>&1) && .\\bin2hex mbr1.bin mbr.h && copy 440.bin mbr.bin && copy mbr.h ..\\src\\i386\\",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compile mbr"
+            ]
+        },
+        {
+            "label": "compile kernel8",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-target",
+                "armv6-none-eabi",
+                "-D__RPI400__",
+                "-fuse-ld=lld",
+                "-nostdlib",
+                "-nostdinc",
+                "-fno-builtin",
+                "-T",
+                "../src/rpi400/linker.ld",
+                "../src/rpi400/start.S",
+                "../src/kernel.c",
+                "../src/rtos.c",
+                "../src/xhci.c",
+                "../src/klib.c",
+                "../src/rpi400/dma.c",
+                "../src/rpi400/pci.c",
+                "../src/rpi400/fb.S",
+                "../src/rpi400/gic400.c",
+                "../src/rpi400/mmu.c",
+                "../src/rpi400/mbox.S",
+                "../src/rpi400/pl011.S",
+                "../src/rpi400/interrupt.c",
+                "-o",
+                "kernel8.elf"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make kernel8",
+            "type": "shell",
+            "command": "llvm-objcopy kernel8.elf -O binary kernel8.img",
+            "windows": {
+                "command": "llvm-objcopy kernel8.elf -O binary kernel8.img"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "compile kernel8",
+                "make boot64"
+            ]
+        },
+        {
+            "label": "compile boot64",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-target",
+                "aarch64-none-elf",
+                "-fuse-ld=lld",
+                "-nostdlib",
+                "-nostdinc",
+                "-fno-builtin",
+                "-T",
+                "../src/rpi400/linker.ld",
+                "../src/rpi400/start64.S",
+                "-o",
+                "boot64.elf"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make boot64",
+            "type": "shell",
+            "command": "/bin/bash -c 'llvm-objcopy boot64.elf -O binary boot64.img && ./toinc.exe boot64.img ../src/rpi400/boot64.inc'",
+            "windows": {
+                "command": "llvm-objcopy boot64.elf -O binary boot64.img && .\\toinc.exe boot64.img ..\\src\\rpi400\\boot64.inc"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "make toinc",
+                "compile boot64"
+            ]
+        },
+        {
+            "label": "compile vbr",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-c",
+                "-target",
+                "i686-linux-gnu",
+                "-m16",
+                "../src/i386/vbr.S",
+                "-o",
+                "vbr.o"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "make vbr",
+            "type": "shell",
+            "command": "./obj2bin.exe vbr.o vbr.bin && ./bin2hex.exe vbr.bin vbr.h && cp vbr.h ../src/i386/",
+            "windows": {
+                "command": "(.\\obj2bin vbr.o vbr.bin >vbr.log 2>&1) && .\\bin2hex vbr.bin vbr.h && copy vbr.h ..\\src\\i386\\"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "make obj2bin",
+                "make bin2hex",
+                "compile vbr"
+            ]
+        },
+        {
+            "label": "make vhd",
+            "type": "shell",
+            "command": "sh ../tools/mkvhd.cmd",
+            "args": [],
+            "windows": {
+                "command": "..\\tools\\mkvhd.cmd",
+                "args": [],
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "make vbr",
+                "make mbr"
+            ]
+        },
+        {
+            "label": "clean tmp",
+            "type": "shell",
+            "command": "rm -f *.d *.o",
+            "args": [],
+            "windows": {
+                "command": "del *.d; del *.o; del *.pdb; del *.ilk",
+                "args": [],
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            }
+        },
+        {
+            "label": "copy cmd",
+            "type": "shell",
+            "command": "cp ../src/amd64/qemu.cmd qemu64.cmd",
+            "args": [],
+            "windows": {
+                "command": "copy ..\\src\\amd64\\qemu.cmd qemu64.cmd && copy ..\\src\\rpi400\\qemu.cmd qemupi.cmd",
+                "args": [],
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": []
+        },
+        {
+            "label": "make 32gears",
+            "type": "shell",
+            "command": "clang",
+            "args": [
+                "-Wall",
+                "-ansi",
+                "-D_CRT_SECURE_NO_WARNINGS=1",
+                "../tools/run.c",
+                "-o",
+                "32gears.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "make obj2bin",
+                "make bin2hex",
+                "make parted",
+                "make vbr",
+                "make mbr",
+                "compile bootx64.efi",
+                "make bootx64.efi",
+                "make io16",
+                "make boot64",
+                "make kernel8",
+                "make io32",
+                "make vhd_cp",
+                "make mkdosfs",
+                "make vhd",
+                "copy cmd",
+            ]
+        },
+        {
+            "label": "all",
+            "command": "./32gears.exe",
+            "args": [],
+            "windows": {
+                "command": ".\\32gears.exe",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/bin/"
+            },
+            "dependsOn": [
+                "make 32gears"
+            ]
+        }
+    ],
+    "version": "2.0.0"
+}

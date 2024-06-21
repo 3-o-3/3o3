@@ -1,0 +1,21 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/contrib": true
+      },
+      "search.exclude": {
+        "**/contrib": true
+      },
+      "files.associations": {
+        "xutility": "c",
+        "memory": "c",
+        "cstdlib": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "vector": "c",
+        "stdio.h": "c",
+        "klib.h": "c",
+        "internal.h": "c"
+      }
+}
