@@ -36,6 +36,16 @@ cd ..
 codium .
 ``` 
 
+TODO
+----
+
+- USB Keyboard
+- USB mouse
+- USB masse storage
+- USB CH341
+- USB CDC-ECM (RTL8152)
+- USB Audio Class 1
+
 
 REFERENCES :
 ------------
