@@ -42,9 +42,10 @@ TODO
 - USB Keyboard
 - USB mouse
 - USB masse storage
-- USB CH341
+- USB serial port CH341
 - USB CDC-ECM (RTL8152)
 - USB Audio Class 1
+- USB Printer Device Class
 
 
 REFERENCES :
